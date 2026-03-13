@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Tips - מהדורת החדשות מס' 2</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --primary-glow: #10b981; /* ירוק למהדורה השנייה */
+            --text-main: #f8fafc;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 2rem;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            margin-top: 2.5rem;
+            color: var(--primary-glow);
+            border-bottom: 1px solid #334155;
+            padding-bottom: 0.5rem;
+        }
+
+        /* טיפ 6: Container Queries */
+        .card-container {
+            container-type: inline-size;
+            container-name: card;
+            resize: horizontal;
+            overflow: hidden;
+            border: 1px dashed #475569;
+            padding: 1rem;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .responsive-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: var(--surface-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        @container card (min-width: 400px) {
+            .responsive-card {
+                flex-direction: row;
+                align-items: center;
+                background: #334155; /* שינוי רגע לסימון */
+            }
+        }
+
+        /* טיפ 7: סלקטור ההורה :has() */
+        .has-demo {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            width: max-content;
+        }
+
+        .has-demo:has(input:checked) {
+            border-color: var(--primary-glow);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        /* טיפ 8: איזון טקסט (text-wrap: balance) */
+        .balanced-text {
+            max-width: 300px;
+            background: var(--surface-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .balanced-headline {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-wrap: balance; /* הקסם קורה כאן */
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        /* טיפ 9: Scroll-Driven Animations */
+        .scroll-watcher {
+            height: 10px;
+            background: var(--primary-glow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            scale: 0 1;
+            transform-origin: left;
+            animation: scroll-progress auto linear;
+            animation-timeline: scroll(); /* קישור האנימציה לגלילה */
+            z-index: 1000;
+        }
+
+        @keyframes scroll-progress {
+            to { scale: 1 1; }
+        }
+
+        /* טיפ 10: Subgrid */
+        .grid-parent {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 1rem;
+            background: #1e293b;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .grid-child {
+            display: grid;
+            grid-column: 1 / -1;
+            grid-template-columns: subgrid; /* יורש את העמודות מההורה */
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 0;
+        }
+
+        .grid-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-watcher"></div>
+
+    <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 2rem;">CSS Tips - מהדורה 2: העתיד כבר כאן</h1>
+    <p>ברוכים הבאים למהדורה השנייה! הפעם נתמקד בפיצ'רים שמשנים את כללי המשחק לחלוטין.</p>
+
+    <section>
+        <h2 class="section-title">Container Queries (שאילתות מיכל)</h2>
+        <p style="margin-bottom: 1rem;">
+            סוף סוף אנחנו יכולים לעצב רכיבים לפי הגודל <strong>שלהם</strong> ולא לפי גודל המסך!
+            גררו את הפינה הימנית של המסגרת למטה כדי לראות איך הכרטיס משנה את הפריסה שלו כשהוא מתרחב.
+        </p>
+        <div class="card-container">
+            <div class="responsive-card">
+                <div style="width: 50px; height: 50px; background: #10b981; border-radius: 50%;"></div>
+                <div>
+                    <strong>כרטיס חכם</strong>
+                    <p>אני משנה את העיצוב שלי בהתאם לרוחב המיכל שלי.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">סלקטור ה-:has() (סלקטור הורה)</h2>
+        <p style="margin-bottom: 1rem;">
+            במשך שנים חיכינו לזה: היכולת לעצב אלמנט הורה בהתאם למה שיש בתוכו.
+            סמנו את תיבת הסימון למטה ותראו איך המסגרת כולה משתנה.
+        </p>
+        <div class="has-demo">
+            <label>
+                <input type="checkbox"> סמן אותי
+            </label>
+            <span>אם אני מסומן, ההורה שלי (המסגרת) יקבל צבע רקע ירוק וגבול זוהר!</span>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">איזון טקסט (text-wrap: balance)</h2>
+        <p style="margin-bottom: 1rem;">
+            נמאס לכם שכותרות נשברות בצורה מכוערת ומשאירות מילה בודדת בשורה חדשה?
+            התכונה החדשה הזו מאזנת אוטומטית את אורך השורות בכותרת למראה אסתטי יותר.
+        </p>
+        <div class="balanced-text">
+            <div class="balanced-headline">זוהי כותרת ארוכה מאוד שאמורה להיראות טוב ומאוזנת בשתי שורות</div>
+            <p>הדפדפן מחשב את השבירה האופטימלית כדי למנוע "יתומים" (מילים בודדות).</p>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Scroll-Driven Animations</h2>
+        <p style="margin-bottom: 1rem;">
+            תסתכלו למעלה! יש פס התקדמות ירוק בראש העמוד שמתמלא ככל שאתם גוללים למטה.
+            כל זה נעשה ב-CSS בלבד, ללא שורת JavaScript אחת!
+        </p>
+        <div style="height: 200px; overflow-y: auto; border: 1px solid #334155; padding: 1rem;">
+            <p>גללו את העמוד הראשי (לא את התיבה הזו) כדי לראות את האפקט בראש המסך.</p>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">CSS Subgrid</h2>
+        <p style="margin-bottom: 1rem;">
+            מאפשר לנכדים להשתתף בגריד של הסבא שלהם. שימו לב איך העמודות הפנימיות מסתדרות בול לפי העמודות של ההורה החיצוני.
+        </p>
+        <div class="grid-parent">
+            <!-- כותרות הגריד הראשי -->
+            <div class="grid-item">טור 1 (1fr)</div>
+            <div class="grid-item">טור 2 (2fr)</div>
+            <div class="grid-item">טור 3 (1fr)</div>
+
+            <!-- ילד שהוא גם גריד -->
+            <div class="grid-child">
+                <div class="grid-item">ילד 1</div>
+                <div class="grid-item">ילד 2</div>
+                <div class="grid-item">ילד 3</div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

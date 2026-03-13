@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Tips - מרכוז מוחלט</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --primary-glow: #3b82f6;
+            --text-main: #f8fafc;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 2rem;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--primary-glow);
+            border-bottom: 1px solid #334155;
+            padding-bottom: 0.5rem;
+        }
+        .absolute-center-wrapper {
+            position: relative;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: grid;
+            max-width: 400px;
+        }
+        .centered-element {
+            position: absolute;
+            inset: 0;
+            place-self: center;
+            background: #ef4444;
+            padding: 1rem;
+            border-radius: 8px;
+            width: max-content;
+            height: max-content;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <h2 class="section-title">מרכוז מוחלט (inset + place-self)</h2>
+        <div class="absolute-center-wrapper">
+            <div class="centered-element">אני ממוקם במרכז בדיוק</div>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>CSS Tips</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
     <style>
-        /* * טיפ 1: בחירת אלמנט השורש (The Different Ways to Select <html>)
-         * שימוש ב-:root להגדרת משתנים גלובליים
-         */
         :root {
             --bg-color: #0f172a;
             --surface-color: #1e293b;
@@ -21,214 +17,111 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: system-ui, -apple-system, sans-serif;
-            padding: 2rem;
-        }
-
-        /* * טיפ 2: Overscroll Behavior (מתוך More CSS quick tips)
-         * מונע מגלגלת העכבר להמשיך לגלול את כל העמוד כאשר מגיעים לסוף התפריט הצדדי
-         */
-        .sidebar-scroll {
-            overscroll-behavior: contain;
-            height: 200px;
-            overflow-y: auto;
-            border: 1px solid #334155;
-            padding: 1rem;
-            border-radius: 0.5rem;
-        }
-
-        /* * טיפ 3: Anchor Positioning & Reflective Glow (Create a reflective glow effect + This shouldn't be possible with CSS)
-         * יצירת זוהר שעוקב אחרי העכבר ללא JavaScript
-         */
-        .anchor-nav {
-            position: relative;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
             display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--surface-color);
-            border-radius: 0.75rem;
-            width: max-content;
+            flex-direction: column;
         }
 
-        .anchor-link {
-            padding: 0.5rem 1rem;
+        #main-layout {
+            display: none;
+            flex: 1;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            flex-direction: row;
+        }
+
+        #sidebar {
+            width: 250px;
+            background-color: var(--surface-color);
+            padding: 1rem;
+            border-left: 1px solid #334155;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        #sidebar h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary-glow);
+        }
+
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #sidebar li {
+            margin-bottom: 0.5rem;
+        }
+
+        #sidebar a {
             text-decoration: none;
             color: var(--text-main);
-            z-index: 1;
-            /* אנו מגדירים כל לינק כאזור עוגן פוטנציאלי */
-            anchor-name: --nav-item;
+            display: block;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            transition: background 0.2s;
         }
 
-        .anchor-link:hover {
-            /* בעת מעבר עכבר, הלינק הספציפי הופך לעוגן הפעיל */
-            anchor-name: --active-nav;
+        #sidebar a:hover, #sidebar a.active {
+            background-color: rgba(59, 130, 246, 0.2);
         }
 
-        .glow-indicator {
-            position: absolute;
-            /* חיבור האינדיקטור לעוגן הפעיל */
-            position-anchor: --active-nav;
-
-            /* מיקום האינדיקטור בדיוק על העוגן */
-            top: anchor(top);
-            bottom: anchor(bottom);
-            left: anchor(left);
-            right: anchor(right);
-
-            background: rgba(59, 130, 246, 0.2);
-            border: 1px solid rgba(59, 130, 246, 0.5);
-            border-radius: 0.5rem;
-            box-shadow: 0 0 15px var(--primary-glow);
-
-            /* אנימציה קפיצית (Spring Easing) בעת המעבר בין אלמנטים */
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        /* מראה את הזוהר רק כאשר מרחפים על הניווט */
-        .anchor-nav:hover .glow-indicator {
-            opacity: 1;
-        }
-
-        .no-anchor-warning {
-            display: none;
-            color: #f87171;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
-
-        /* * פולבק לדפדפנים שלא תומכים ב-Anchor Positioning
-         */
-        @supports not (position-anchor: --active-nav) {
-            .glow-indicator {
-                display: none;
-            }
-
-            .no-anchor-warning {
-                display: block !important;
-            }
-        }
-
-        /* * טיפ 4: צורות מודרניות - Squircle (מתוך 20 Modern CSS Features)
-         * למרות ש-corner-shape עדיין ניסיוני, ניצור אפקט Squircle מודרני בעזרת clip-path או border-radius מתקדם
-         */
-        .squircle-card {
-            background: var(--surface-color);
-            padding: 2rem;
-            width: 200px;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            /* סימולציה של צורת Squircle של אפל */
-            clip-path: polygon(
-                    0% 24px, 0% calc(100% - 24px),
-                    24px 100%, calc(100% - 24px) 100%,
-                    100% calc(100% - 24px), 100% 24px,
-                    calc(100% - 24px) 0%, 24px 0%
-            );
-            border-radius: 20%; /* Smooth corners fallback */
-        }
-
-        /* * טיפ 5: מירכוז מוחלט וקצר (place-self & inset מתוך More CSS quick tips)
-         */
-        .absolute-center-wrapper {
+        #content-area {
+            flex: 1;
+            background: white;
             position: relative;
-            height: 150px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            display: grid; /* דרוש עבור place-self */
+            overflow: hidden;
         }
 
-        .centered-element {
-            position: absolute;
-            inset: 0; /* top, right, bottom, left = 0 */
-            place-self: center; /* מחליף את הצורך ב-transform או margin auto */
-
-            background: #ef4444;
-            padding: 1rem;
-            border-radius: 8px;
-            width: max-content;
-            height: max-content;
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
-        /* * עיצוב ל-Popover החדש (Native HTML Modals - Invoker Commands)
-         */
-        [popover] {
-            background: var(--surface-color);
-            color: white;
-            border: 1px solid #334155;
-            border-radius: 1rem;
+        #app {
             padding: 2rem;
-            max-width: 500px;
-            margin: auto; /* ממורכז אוטומטית */
-        }
-
-        [popover]::backdrop {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            margin-top: 2.5rem;
-            color: var(--primary-glow);
+            max-width: 600px;
+            margin: 2rem auto;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div id="app">
-        <h1 class="text-3xl font-bold mb-8">Modern CSS Showcase</h1>
-
-        <section>
-            <h2 class="section-title">Tip 3: Anchor Positioning (Hover to see)</h2>
-            <nav class="anchor-nav">
-                <a href="#" class="anchor-link">Home</a>
-                <a href="#" class="anchor-link">About</a>
-                <a href="#" class="anchor-link">Projects</a>
-                <a href="#" class="anchor-link">Contact</a>
-                <div class="glow-indicator"></div>
-            </nav>
-            <p class="no-anchor-warning">⚠️ Your browser does not support CSS Anchor Positioning.</p>
-        </section>
-
-        <section>
-            <h2 class="section-title">Tip 4: Squircle Shape</h2>
-            <div class="squircle-card">
-                Modern Apple-style Smooth Corners
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title">Tip 2: Overscroll Behavior</h2>
-            <div class="sidebar-scroll w-64">
-                <p>Scroll down to the end...</p>
-                <div style="height: 400px; background: linear-gradient(to bottom, transparent, #3b82f6); margin: 1rem 0;"></div>
-                <p>When you reach this point, scrolling won't propagate to the body!</p>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title">Tip 5: Absolute Centering (inset + place-self)</h2>
-            <div class="absolute-center-wrapper w-full max-w-md">
-                <div class="centered-element">I'm perfectly centered</div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="section-title">Native Popover API</h2>
-            <button popovertarget="my-popover" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition">
-                Open Popover
-            </button>
-            <div id="my-popover" popover>
-                <h3 class="text-xl font-bold mb-2">Hello!</h3>
-                <p>This is a native HTML popover. No JavaScript required for toggling or backdrop blurring!</p>
-            </div>
-        </section>
+        <h1 class="text-2xl font-bold mb-4">טיפים ל-CSS</h1>
+        <p class="mb-2">ברוכים הבאים לניוזלטר הטיפים של CSS! כאן תמצאו את כל העדכונים החדשים והחמים ביותר בעיצוב ופיתוח.</p>
+        <p class="mb-4">אנחנו משתמשים כעת ב-CSS Nesting מודרני!</p>
+        <button id="close-popup" style="padding: 0.5rem 1rem; background: #646cff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            התחל לגלוש בטיפים
+        </button>
     </div>
+
+    <div id="main-layout">
+        <aside id="sidebar">
+            <h2>ארכיון מבזקים</h2>
+            <ul id="newsletter-list">
+                <li><a href="/news/2026-03-13.html" target="content-frame">13/03/2026 - CSS Subgrid</a></li>
+                <li><a href="/news/2026-03-12.html" target="content-frame">12/03/2026 - Scroll Animations</a></li>
+                <li><a href="/news/2026-03-11.html" target="content-frame">11/03/2026 - איזון טקסט</a></li>
+                <li><a href="/news/2026-03-10.html" target="content-frame">10/03/2026 - סלקטור :has()</a></li>
+                <li><a href="/news/2026-03-09.html" target="content-frame">09/03/2026 - Container Queries</a></li>
+                <li><a href="/news/2026-03-08.html" target="content-frame">08/03/2026 - Native Popover</a></li>
+                <li><a href="/news/2026-03-07.html" target="content-frame">07/03/2026 - מרכוז מוחלט</a></li>
+                <li><a href="/news/2026-03-06.html" target="content-frame">06/03/2026 - Overscroll Behavior</a></li>
+                <li><a href="/news/2026-03-05.html" target="content-frame">05/03/2026 - צורת Squircle</a></li>
+                <li><a href="/news/2026-03-04.html" target="content-frame">04/03/2026 - Anchor Positioning</a></li>
+            </ul>
+        </aside>
+        <main id="content-area">
+            <iframe name="content-frame" src=""></iframe>
+        </main>
+    </div>
+
     <script type="module" src="/src/index.ts"></script>
 </body>
 </html>
