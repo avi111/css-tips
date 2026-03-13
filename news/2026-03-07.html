@@ -50,6 +50,11 @@
 <body>
     <section>
         <h2 class="section-title">מרכוז מוחלט (inset + place-self)</h2>
+        <p style="margin-bottom: 1rem; line-height: 1.6;">
+            במשך שנים המרכוז האנכי והאופקי ב-CSS היה מקור לבדיחות. היום, עבור אלמנט בעל מיקום אבסולוטי, שכחו מ-<code>top: 50%; left: 50%; transform: translate(-50%, -50%);</code>!
+            דרך חדשה וקצרה למרכז אלמנט מכל הכיוונים היא להשתמש ב-<code>inset: 0</code>
+            יחד עם <code>place-self: center</code> (בתנאי שההורה מוגדר כ-<code>display: grid</code>). זה קצר, נקי ועובד נהדר.
+        </p>
         <div class="absolute-center-wrapper">
             <div class="centered-element">אני ממוקם במרכז בדיוק</div>
         </div>
